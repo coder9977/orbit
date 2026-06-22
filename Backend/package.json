@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon --watch src --exec tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@koa/cors": "^4.0.0",
+    "apollo-server-koa": "^3.12.0",
+    "graphql": "^16.8.0",
+    "koa": "^2.14.2",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^12.0.0",
+    "mongoose": "^7.4.0"
+  },
+  "devDependencies": {
+    "@types/koa-router": "^7.4.9",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "tsx": "^4.22.4",
+    "typescript": "^5.5.4"
+  }
+}

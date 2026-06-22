@@ -1,0 +1,26 @@
+{
+  "name": "bun_learning",
+  "module": "src/main.tsx",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun x vite",
+    "build": "bun x vite build",
+    "preview": "bun x vite preview",
+    "typecheck": "bun x tsc --noEmit"
+  },
+  "dependencies": {
+    "graphql": "^17.0.1",
+    "graphql-request": "^7.4.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16"
+  }
+}

@@ -5,6 +5,7 @@ import Router from "koa-router";
 import mongoose from "mongoose";
 import { createApolloServer } from "./graphql/server";
 import { healthRouter } from "./api/health.js";
+import { DEFAULT_BACKEND_PORT, DEFAULT_MONGODB_URI } from "./config/config";
 
 const app = new Koa();
 const router = new Router();
@@ -16,7 +17,7 @@ router.use(healthRouter.routes());
 app.use(router.routes()).use(router.allowedMethods());
 
 async function startServer() {
-  const MONGO_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/koa_backend";
+  const MONGO_URI = process.env.MONGODB_URI || DEFAULT_MONGODB_URI;
 
   await mongoose.connect(MONGO_URI);
   console.log("MongoDB connected", MONGO_URI);
@@ -25,7 +26,7 @@ async function startServer() {
   await apolloServer.start();
   apolloServer.applyMiddleware({ app, path: "/graphql" });
 
-  const port = Number(process.env.BACKEND_PORT || 3138);
+  const port = Number(process.env.BACKEND_PORT || DEFAULT_BACKEND_PORT);
   app.listen(port, () => {
     console.log(`Backend listening on http://localhost:${port}`);
     console.log(`GraphQL endpoint: http://localhost:${port}/graphql`);

@@ -7,9 +7,17 @@ const rootElement = document.getElementById("root");
 if (!rootElement) {
   throw new Error("Could not find root element");
 }
-
+const params = new URLSearchParams(location.search);
+const isStrictModeEnabled =
+  params.get("isStrictMode")?.toLowerCase() === "true";
 createRoot(rootElement).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <>
+    {isStrictModeEnabled ? (
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    ) : (
+      <App />
+    )}
+  </>,
 );

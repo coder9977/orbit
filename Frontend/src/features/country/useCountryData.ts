@@ -1,19 +1,9 @@
-import { useEffect, useState } from "react";
-import { GraphQLClient, gql } from "graphql-request";
+import { useEffect, useRef, useState } from "react";
 import type { Country } from "./countryTypes";
+import { getGraphQLClient } from "../../utils/graphql";
+import { BACKEND_GRAPHQL_ENDPOINT } from "../../constants/global_constants";
+import {QUERY_COUNTRIES} from "../../graphQl/Countries/countries";
 
-const endpoint = import.meta.env.VITE_GRAPHQL_ENDPOINT || "http://localhost:3138/graphql";
-
-const query = gql`
-  query CountryList {
-    countries {
-      code
-      name
-      emoji
-      capital
-    }
-  }
-`;
 
 interface CountryListResponse {
   countries: Country[];
@@ -25,10 +15,10 @@ export function useCountryData() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const client = new GraphQLClient(endpoint);
+    const client = getGraphQLClient(BACKEND_GRAPHQL_ENDPOINT);
 
     client
-      .request<CountryListResponse>(query)
+      .request<CountryListResponse>(QUERY_COUNTRIES)
       .then((data) => {
         setCountries(data.countries);
         setLoading(false);

@@ -4,9 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:f": "cd ./Frontend && bun run dev",
-    "start:b": "cd ./Backend && bun run dev",
-    "start": "sh -c '(cd ./Frontend && bun run dev) & (cd ./Backend && bun run dev) & wait'"
+    "dev": "sh -c '(cd ./Frontend && bun run dev) & (cd ./Backend && bun run dev) & wait'"
   },
   "keywords": [],
   "author": "",

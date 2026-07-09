@@ -9,7 +9,7 @@ if (!rootElement) {
 }
 const params = new URLSearchParams(location.search);
 const isStrictModeEnabled =
-  params.get("isStrictMode")?.toLowerCase() === "true";
+  params.get("isDev")?.toLowerCase() === "true";
 createRoot(rootElement).render(
   <>
     {isStrictModeEnabled ? (

@@ -3,13 +3,14 @@ import cors from "@koa/cors";
 import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 import mongoose from "mongoose";
+import koaWinston from "koa-winston";
 import { createApolloServer } from "./graphql/server";
 import { healthRouter } from "./api/health.js";
-import { DEFAULT_BACKEND_PORT, DEFAULT_MONGODB_URI } from "./config/config";
+import { DEFAULT_BACKEND_PORT, MONGO_URI } from "./config/config";
 
 const app = new Koa();
 const router = new Router();
-
+  
 app.use(cors());
 app.use(bodyParser());
 
@@ -17,8 +18,6 @@ router.use(healthRouter.routes());
 app.use(router.routes()).use(router.allowedMethods());
 
 async function startServer() {
-  const MONGO_URI = process.env.MONGODB_URI || DEFAULT_MONGODB_URI;
-
   await mongoose.connect(MONGO_URI);
   console.log("MongoDB connected", MONGO_URI);
 

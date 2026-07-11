@@ -7,6 +7,8 @@ import koaWinston from "koa-winston";
 import { createApolloServer } from "./graphql/server";
 import { healthRouter } from "./api/health.js";
 import { DEFAULT_BACKEND_PORT, MONGO_URI } from "./config/config";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = new Koa();
 const router = new Router();

@@ -4,9 +4,9 @@ import bodyParser from "koa-bodyparser";
 import Router from "koa-router";
 import mongoose from "mongoose";
 import koaWinston from "koa-winston";
-import { createApolloServer } from "./graphql/server";
+import { createApolloServer } from "./graphql/server.ts";
 import { healthRouter } from "./api/health.js";
-import { DEFAULT_BACKEND_PORT, MONGO_URI } from "./config/config";
+import { DEFAULT_BACKEND_PORT, MONGO_URI } from "./config/config.ts";
 import dotenv from "dotenv";
 dotenv.config();
 

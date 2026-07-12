@@ -7,17 +7,21 @@
     "dev": "bun x vite",
     "build": "bun x vite build",
     "preview": "bun x vite preview",
-    "typecheck": "bun x tsc --noEmit"
+    "typecheck": "bun x tsc --noEmit",
+    "test": "bun x jest"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
     "graphql": "^17.0.1",
     "graphql-request": "^7.4.0",
+    "jest": "^30.4.2",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/jest": "^30.0.0",
+    "@types/mocha": "^10.0.10",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.2",

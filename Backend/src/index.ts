@@ -12,8 +12,13 @@ dotenv.config();
 
 const app = new Koa();
 const router = new Router();
-  
-app.use(cors());
+app.use(cors({
+  origin: (ctx) =>{
+    const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
+    const requestOrigin = ctx.get('origin');
+    return allowedOrigins.includes(requestOrigin) ? requestOrigin : ""
+  }
+}));
 app.use(bodyParser());
 
 router.use(healthRouter.routes());

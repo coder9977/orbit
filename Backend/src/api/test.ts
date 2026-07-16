@@ -1,8 +1,8 @@
 import Router from "koa-router";
 
 const router = new Router();
-router.get("/health", (ctx: any) => {
+router.get("/test", (ctx: any) => {
   ctx.body = { status: "ok" };
 });
 
-export { router as healthRouter };
+export { router as testRouter };

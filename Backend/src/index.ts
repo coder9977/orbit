@@ -15,8 +15,9 @@ const router = new Router();
 app.use(cors({
   origin: (ctx) =>{
     const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
+    const formattedAllowedOrigins = allowedOrigins.map((origin) => origin.trim().replace(/\/$/, ""));
     const requestOrigin = ctx.get('origin');
-    return allowedOrigins.includes(requestOrigin) ? requestOrigin : ""
+    return formattedAllowedOrigins.includes(requestOrigin) ? requestOrigin : ""
   }
 }));
 app.use(bodyParser());

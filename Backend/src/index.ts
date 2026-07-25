@@ -8,6 +8,7 @@ import { createApolloServer } from "./graphql/server.ts";
 import { testRouter } from "./api/test.ts";
 import { DEFAULT_BACKEND_PORT, MONGO_URI } from "./config/config.ts";
 import dotenv from "dotenv";
+import { authRouter } from "./api/auth.ts";
 dotenv.config();
 
 const app = new Koa();
@@ -17,12 +18,13 @@ app.use(cors({
     const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
     const formattedAllowedOrigins = allowedOrigins.map((origin) => origin.trim().replace(/\/$/, ""));
     const requestOrigin = ctx.get('origin');
-    return formattedAllowedOrigins.includes(requestOrigin) ? requestOrigin : ""
+    return formattedAllowedOrigins.includes(requestOrigin) ? requestOrigin : "*"
   }
 }));
 app.use(bodyParser());
 
 router.use(testRouter.routes());
+router.use(authRouter.routes());
 app.use(router.routes()).use(router.allowedMethods());
 
 async function startServer() {

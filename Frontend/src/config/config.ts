@@ -1,1 +1,1 @@
-export const BACKEND_GRAPHQL_ENDPOINT = import.meta.env.VITE_GRAPHQL_ENDPOINT || "http://localhost:3138/graphql";
+export const BACKEND_GRAPHQL_ENDPOINT = import.meta.env.VITE_GRAPHQL_ENDPOINT || "http://192.168.5.199:3138/graphql";

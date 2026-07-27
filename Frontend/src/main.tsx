@@ -1,5 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./styles/global.scss";
 
@@ -11,7 +12,7 @@ const params = new URLSearchParams(location.search);
 const isStrictModeEnabled =
   params.get("isDev")?.toLowerCase() === "true";
 createRoot(rootElement).render(
-  <>
+  <BrowserRouter>
     {isStrictModeEnabled ? (
       <React.StrictMode>
         <App />
@@ -19,5 +20,5 @@ createRoot(rootElement).render(
     ) : (
       <App />
     )}
-  </>,
+  </BrowserRouter>
 );

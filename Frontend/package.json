@@ -19,6 +19,7 @@
     "moment": "^2.30.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "react-router-dom": "^7.18.1",
     "scss": "^0.2.4"
   },
   "devDependencies": {

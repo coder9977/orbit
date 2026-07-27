@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext, type FormEvent, type MouseEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import { type UserInfo } from "../../hooks/useLoginInfo";
 import { LoginResponseStatus } from "./const"
 import { storage, ValueTypes } from "../../utils/storage";
-import { GlobalContext } from "../../App"
+import { GlobalContext } from "../../components/ContextWrapper";
 import { BACKEND_ENDPOINT } from "../../config/config";
 
 export const LoginPage = () => {
@@ -12,14 +13,15 @@ export const LoginPage = () => {
     setLoginInfo: React.Dispatch<React.SetStateAction<UserInfo | null>>;
   }>(GlobalContext)
     const userStore = storage("userInfo", ValueTypes.JSON);
-    const [userInfo, setUserInfo] = useState<UserInfo>(loginInfo) 
+    const [userInfo, setUserInfo] = useState<UserInfo>(loginInfo);
+    const navigate = useNavigate();
     useEffect(() => {
         const storedUserInfo = userStore.get();
         if (storedUserInfo) {
-            setLoginInfo(storedUserInfo);
             setIsRememberMeChecked(true);
+            navigate("/")
         }
-    }, []);
+    }, [loginInfo]);
 
     const loginHandler = async (e: MouseEvent<HTMLButtonElement>) => {
         localStorage.removeItem("userInfo");

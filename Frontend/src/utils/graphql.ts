@@ -1,10 +1,11 @@
 import { GraphQLClient } from "graphql-request";
+import { BACKEND_GRAPHQL_ENDPOINT } from "../config/config";
 
-export const getGraphQLClient = (endpoint: string) => {
-  const client = new GraphQLClient(endpoint, {
+const getGraphQLClient = (endpoint: string) =>
+  new GraphQLClient(endpoint, {
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
     },
   });
-  return client;
-}
+
+export const graphQLClient = getGraphQLClient(BACKEND_GRAPHQL_ENDPOINT);

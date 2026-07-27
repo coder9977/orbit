@@ -1,12 +1,9 @@
 import Router from "koa-router";
-import moment from "moment";
 import type { Context } from "koa";
 import { UserModel } from "../models/user.ts";
+import { type RESPONSE } from "../types/types.ts";
+import { ERR_CODES, REQUEST_STATUS } from "../constants/constants.ts";
 
-type LoginResponse = {
-  status: "ok" | "expired" | "invalid";
-  user?: UserInfo
-};
 
 type UserInfo = {
   name?: string;
@@ -17,18 +14,24 @@ type UserInfo = {
 };
 
 const router = new Router();
-router.post("/login", async (ctx: Context): Promise<LoginResponse> => {
+router.post("/login", async (ctx: Context): Promise<RESPONSE> => {
   const { name, email } = ctx.request.body as UserInfo;
   const user = await UserModel.findOneAndUpdate(
     { name, email },
     { lastLoginAt: new Date() },
     { new: true },
   );
-  console.log(ctx)
   if (!user) {
-    return ctx.body = { status: "invalid" } as LoginResponse
+    return ctx.body = {
+      status: REQUEST_STATUS.REJECTED,
+      code: ERR_CODES.LOGIN_EXPIRED,
+      msg: "login expired",
+    }
   }
-  return ctx.body = { user: user, status: "ok" } as LoginResponse
+  return ctx.body = {
+    data: user,
+    status: REQUEST_STATUS.OK
+  }
 });
 
 export { router as authRouter };

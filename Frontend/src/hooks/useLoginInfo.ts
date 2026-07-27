@@ -16,10 +16,10 @@ export const useLoginInfo = () => {
     useEffect(() => {
         const userInfo = userStore.get() as UserInfo;
         const timeElapsedSinceLastLogin = moment(Date.now()).diff(moment(new Date(userInfo?.lastLoginAt as string)), "m");
-        console.log({ timeElapsedSinceLastLogin})
-        if (timeElapsedSinceLastLogin <= expiryPeriodInMinutes) {
+        if (timeElapsedSinceLastLogin < expiryPeriodInMinutes) {
             return setLoginInfo(userInfo);
         }
+        setLoginInfo(null);
         userStore.clear();
     }, []);
 

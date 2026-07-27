@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext, type FormEvent, type MouseEvent } from "react";
-import { useLoginInfo, type UserInfo } from "../../hooks/useLoginInfo";
+import { type UserInfo } from "../../hooks/useLoginInfo";
 import { LoginResponseStatus } from "./const"
 import { storage, ValueTypes } from "../../utils/storage";
 import { GlobalContext } from "../../App"
+import { BACKEND_ENDPOINT } from "../../config/config";
 
 export const LoginPage = () => {
     const [isRememberMeChecked, setIsRememberMeChecked] = useState(false);` `
@@ -25,14 +26,14 @@ export const LoginPage = () => {
         if (loginInfo?.name && isRememberMeChecked) {
             localStorage.setItem("userInfo", JSON.stringify(loginInfo));
         }
-        const res = await fetch("http://192.168.5.199:3138/login", {
+        const res = await fetch(`${BACKEND_ENDPOINT}/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(userInfo),
         });
-        const { status, user } = await res.json();
+        const { status, data } = await res.json();
         if (status === LoginResponseStatus.INVALID) {
             setLoginInfo(null);
             setIsRememberMeChecked(false);
@@ -40,8 +41,7 @@ export const LoginPage = () => {
             alert("any of the username or password is fucking wrong!");
             return;
         }
-        console.log({user})
-        setLoginInfo(user);
+        setLoginInfo(data);
         
     };
 

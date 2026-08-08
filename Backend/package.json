@@ -17,8 +17,9 @@
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^12.0.0",
     "koa-winston": "^0.0.1",
+    "moment": "^2.30.1",
     "mongoose": "^7.4.0",
-    "moment": "^2.30.1"
+    "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
     "@types/koa-router": "^7.4.9",

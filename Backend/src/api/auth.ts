@@ -24,8 +24,8 @@ router.post("/login", async (ctx: Context): Promise<RESPONSE> => {
   if (!user) {
     return ctx.body = {
       status: REQUEST_STATUS.REJECTED,
-      code: ERR_CODES.LOGIN_EXPIRED,
-      msg: "login expired",
+      code: ERR_CODES.LOGIN_FAILED,
+      msg: "login failed with provided credentials",
     }
   }
   return ctx.body = {

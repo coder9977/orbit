@@ -1,17 +1,17 @@
-import { useState, useEffect, useContext, type FormEvent, type MouseEvent } from "react";
+import { useState, useEffect, useContext, type MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { type UserInfo } from "../../hooks/useLoginInfo";
+import { type UserInfo } from "../../components/ContextWrapper";
 import { LoginResponseStatus } from "./const"
-import { storage, ValueTypes } from "../../utils/storage";
+import { storage, ValueTypes } from "../../utils/storage.utils";
 import { GlobalContext } from "../../components/ContextWrapper";
 import { BACKEND_ENDPOINT } from "../../config/config";
 
 export const LoginPage = () => {
-    const [isRememberMeChecked, setIsRememberMeChecked] = useState(false);` `
+    const [isRememberMeChecked, setIsRememberMeChecked] = useState(false);
     const { loginInfo, setLoginInfo } = useContext<{
     loginInfo: UserInfo;
     setLoginInfo: React.Dispatch<React.SetStateAction<UserInfo | null>>;
-  }>(GlobalContext)
+  }>(GlobalContext);
     const userStore = storage("userInfo", ValueTypes.JSON);
     const [userInfo, setUserInfo] = useState<UserInfo>(loginInfo);
     const navigate = useNavigate();
@@ -36,13 +36,14 @@ export const LoginPage = () => {
             body: JSON.stringify(userInfo),
         });
         const { status, data } = await res.json();
-        if (status === LoginResponseStatus.INVALID) {
+        if (status === LoginResponseStatus.REJECTED) {
             setLoginInfo(null);
             setIsRememberMeChecked(false);
             userStore.clear();
             alert("any of the username or password is fucking wrong!");
             return;
         }
+        userStore.set(JSON.stringify(data));
         setLoginInfo(data);
         
     };

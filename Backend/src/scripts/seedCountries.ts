@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { CountryModel } from "../models/country";
+import { CountryModel } from "../models/country.ts";
 
 const MONGO = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/koa_backend";
 

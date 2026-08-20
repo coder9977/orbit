@@ -93,7 +93,6 @@ input::placeholder {
   left: 0;
   right: 0;
   background: url(/images/login_bg.jpg) no-repeat center center;
-  background:url(https://static.vecteezy.com/system/resources/previews/048/469/914/large_2x/pink-cherry-blossoms-and-paper-fans-free-photo.jpeg) no-repeat center center;
   object-fit: cover;
   filter: blur(.3rem);
   transform: scale(1.05);
@@ -185,4 +184,10 @@ input::placeholder {
 .input-group.remember a:hover {
   color: rgba(255, 255, 255, 0.7);
 
+}
+
+.video-background {
+  width: 100vw;
+  height: 100vh;
+  object-fit: fill;
 }

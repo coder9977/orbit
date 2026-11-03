@@ -13,6 +13,7 @@
     "apollo-server-koa": "^3.12.0",
     "dotenv": "^17.4.2",
     "graphql": "^16.8.0",
+    "jose": "^6.2.12",
     "koa": "^2.14.2",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^12.0.0",
@@ -22,6 +23,7 @@
     "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
+    "@types/bun": "^1.4.2",
     "@types/koa-router": "^7.4.9",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",

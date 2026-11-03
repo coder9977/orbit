@@ -1,3 +1,4 @@
+import "dotenv/config";
 import Koa from "koa";
 import cors from "@koa/cors";
 import bodyParser from "koa-bodyparser";
@@ -5,14 +6,16 @@ import Router from "koa-router";
 import mongoose from "mongoose";
 import koaWinston from "koa-winston";
 import { createApolloServer } from "./graphql/server.ts";
-import { testRouter } from "./api/test.ts";
+import { routes } from "./routes/index.ts";
 import { DEFAULT_BACKEND_PORT, MONGO_URI } from "./config/config.ts";
-import dotenv from "dotenv";
-import { authRouter } from "./api/auth.ts";
-dotenv.config();
+import { middlewares } from "./middleware/middlewares.ts";
+import { registerMiddlewares } from "./utils/middleware.utils.ts";
+import { registerRoutes } from "./utils/routes.utils.ts";
 
 const app = new Koa();
 const router = new Router();
+registerMiddlewares(app, middlewares)
+
 app.use(cors({
   origin: (ctx) =>{
     const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
@@ -23,8 +26,7 @@ app.use(cors({
 }));
 app.use(bodyParser());
 
-router.use(testRouter.routes());
-router.use(authRouter.routes());
+registerRoutes(router, routes);
 app.use(router.routes()).use(router.allowedMethods());
 
 async function startServer() {

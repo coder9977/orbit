@@ -6,7 +6,7 @@ type Storage = {
 };
 
 export enum ValueTypes {
-  Primitive = "primitive",
+  PRIMITIVE = "primitive",
   JSON = "json",
 };
 
@@ -31,3 +31,5 @@ export const storage = (key: string, valueType: ValueTypes): Storage => {
   Object.freeze(store);
   return store;
 };
+
+export const tokenStore = storage("token", ValueTypes.PRIMITIVE)

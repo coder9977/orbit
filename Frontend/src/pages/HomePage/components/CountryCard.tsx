@@ -28,7 +28,6 @@ export function CountryCard({ country }: CountryCardProps) {
           <input placeholder="input a new country name" value={countryName} onChange={(e) => setCountryName( e.target.value )} />
           <button onClick={async () => {
               const res = await updateCountryName({ code: country.code, name: countryName });
-              console.log("res", res);
               setModel({ ...model, name: res.updateCountryName.name });
             }}>Submit</button>
         </div>

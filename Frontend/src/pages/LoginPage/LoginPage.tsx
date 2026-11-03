@@ -1,50 +1,47 @@
 import { useState, useEffect, useContext, type MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { type UserInfo } from "../../components/ContextWrapper";
-import { LoginResponseStatus } from "./const"
-import { storage, ValueTypes } from "../../utils/storage.utils";
-import { GlobalContext } from "../../components/ContextWrapper";
+import { API_RESPONSE, ResponseStatus } from "./const"
+import { tokenStore } from "../../utils/storage.utils";
+import {type GlobalContextType, GlobalContext} from "../../context/GlobalContext";
 import { BACKEND_ENDPOINT } from "../../config/config";
+import { httpRequest } from "../../utils/request.utils";
 
 export const LoginPage = () => {
     const [isRememberMeChecked, setIsRememberMeChecked] = useState(false);
-    const { loginInfo, setLoginInfo } = useContext<{
-    loginInfo: UserInfo;
-    setLoginInfo: React.Dispatch<React.SetStateAction<UserInfo | null>>;
-  }>(GlobalContext);
-    const userStore = storage("userInfo", ValueTypes.JSON);
-    const [userInfo, setUserInfo] = useState<UserInfo>(loginInfo);
+    const { loginInfo, setLoginInfo } = useContext<GlobalContextType>(GlobalContext as React.Context<GlobalContextType>);
+    const [userInfo, setUserInfo] = useState<UserInfo>(loginInfo as UserInfo);
     const navigate = useNavigate();
     useEffect(() => {
-        const storedUserInfo = userStore.get();
-        if (storedUserInfo) {
+        if (loginInfo) {
             setIsRememberMeChecked(true);
             navigate("/")
         }
     }, [loginInfo]);
 
     const loginHandler = async (e: MouseEvent<HTMLButtonElement>) => {
-        localStorage.removeItem("userInfo");
-        if (loginInfo?.name && isRememberMeChecked) {
-            localStorage.setItem("userInfo", JSON.stringify(loginInfo));
-        }
-        const res = await fetch(`${BACKEND_ENDPOINT}/login`, {
+        const res = await httpRequest<API_RESPONSE>(`${BACKEND_ENDPOINT}/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(userInfo),
+        }).catch((err)=> {
+            console.log({err});
+            return;
         });
-        const { status, data } = await res.json();
-        if (status === LoginResponseStatus.REJECTED) {
-            setLoginInfo(null);
+        const {status, data } = res as API_RESPONSE;
+        if (status === ResponseStatus.FORBIDDEN) {
             setIsRememberMeChecked(false);
-            userStore.clear();
+            tokenStore.clear();
             alert("any of the username or password is fucking wrong!");
             return;
         }
-        userStore.set(JSON.stringify(data));
-        setLoginInfo(data);
+        if(status === ResponseStatus.OK) {
+            tokenStore.set(data?.token);
+            setLoginInfo(data?.user as UserInfo);
+        }
+        
         
     };
 
@@ -67,7 +64,7 @@ export const LoginPage = () => {
                     <input type="text" placeholder="Username" value={userInfo?.name ?? ""} onChange={(e) => onLoginInfoChange("name", e.target.value)} />
                 </div>
                 <div className="input-group">
-                    <input type="password" placeholder="Password" value={userInfo?.email ?? ""} onChange={(e) => onLoginInfoChange("email", e.target.value)} />
+                    <input type="password" placeholder="Password" value={userInfo?.password ?? ""} onChange={(e) => onLoginInfoChange("password", e.target.value)} />
                 </div>
                 <div className="input-group remember">
                     <div className="remember-me">

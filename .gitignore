@@ -2,3 +2,5 @@ node_modules
 .vite
 .vscode
 .env
+*.pem
+*.traineddata

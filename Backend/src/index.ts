@@ -1,4 +1,6 @@
-import "dotenv/config";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { createServer } from "node:https";import "dotenv/config";
 import Koa from "koa";
 import cors from "@koa/cors";
 import bodyParser from "koa-bodyparser";
@@ -38,9 +40,13 @@ async function startServer() {
   apolloServer.applyMiddleware({ app, path: "/graphql" });
 
   const port = Number(process.env.BACKEND_PORT || DEFAULT_BACKEND_PORT);
-  app.listen(port, () => {
-    console.log(`Backend listening on http://localhost:${port}`);
-    console.log(`GraphQL endpoint: http://localhost:${port}/graphql`);
+
+  createServer({
+    key: readFileSync(path.resolve("../localhost+3-key.pem")),
+    cert: readFileSync(path.resolve("../localhost+3.pem")),
+  }, app.callback()).listen(port, () => {
+    console.log(`Backend listening on https://localhost:${port}`);
+    console.log(`GraphQL endpoint: https://localhost:${port}/graphql`);
   });
 }
 

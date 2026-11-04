@@ -28,7 +28,7 @@ const errorHandlingMiddleware = async (ctx: Context, next: Next) => {
 };
 
 const authMiddleware = async (ctx: Context, next: Next) => {
-  if (authMiddlewareConfig.whitelist.includes(ctx.path)) {
+  if (authMiddlewareConfig.whitelist.find((p) => ctx.path === `/api${p}`)) {
     return next();
   }
   if (ctx.method === "OPTIONS") {

@@ -15,7 +15,7 @@ import { registerMiddlewares } from "./utils/middleware.utils.ts";
 import { registerRoutes } from "./utils/routes.utils.ts";
 
 const app = new Koa();
-const router = new Router();
+const router = new Router({ prefix: "/api" });
 registerMiddlewares(app, middlewares)
 
 app.use(cors({

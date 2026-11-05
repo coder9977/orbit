@@ -4,7 +4,7 @@ import {
   JWT_VALIDITY_PERIOD,
   JWT_VALIDITY_UNIT,
 } from "../config/config.ts";
-import { ERR_CODES, REQUEST_STATUS } from "../constants/constants.ts";
+import { ERR_CODES, REQUEST_STATUS, AUTH_COOKIE_NAME } from "../constants/constants.ts";
 import { type UserInfo } from "../routes/auth.ts";
 import { verifyToken } from "../utils/jwt.utils.ts";
 import { UserModel } from "../models/user.ts";
@@ -34,10 +34,8 @@ const authMiddleware = async (ctx: Context, next: Next) => {
   if (ctx.method === "OPTIONS") {
     return next();
   }
-  console.log(`Test middleware executed: ${ctx.method} ${ctx.path}`);
   try {
-    const { authorization } = ctx.request.header;
-    const token = authorization?.split(" ")[1];
+    const token = ctx.cookies.get(AUTH_COOKIE_NAME);
     if (!token) {
       ctx.status = REQUEST_STATUS.FORBIDDEN;
       ctx.state.middlewareError = {

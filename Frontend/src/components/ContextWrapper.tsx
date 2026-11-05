@@ -1,5 +1,4 @@
 import { JSX, useEffect, useState } from "react";
-import { tokenStore } from "../utils/storage.utils";
 import { useNavigate } from "react-router-dom";
 import { httpRequest } from "../utils/request.utils";
 import { BACKEND_ENDPOINT } from "../config/config";
@@ -16,7 +15,6 @@ export type UserInfo = {
 };
 
 export const ContextWrapper = ({ children }: { children: JSX.Element }) => {
-  const token = tokenStore.get() ?? "";
   const [loginInfo, setLoginInfo] = useState<UserInfo | null>(null);
   const navigate = useNavigate();
 
@@ -28,7 +26,6 @@ export const ContextWrapper = ({ children }: { children: JSX.Element }) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}` : "",
         } as HeadersInit,
         signal: controller.signal,
       },
@@ -36,7 +33,6 @@ export const ContextWrapper = ({ children }: { children: JSX.Element }) => {
       .then((res) => {
         if (res?.status !== (REQUEST_STATUS.OK as unknown as ResponseStatus)) {
           setLoginInfo(null);
-          tokenStore.clear();
           navigate("/login");
           return;
         }
@@ -44,7 +40,6 @@ export const ContextWrapper = ({ children }: { children: JSX.Element }) => {
       })
       .catch((err) => {
         console.log("Error fetching user info: ", err);
-        tokenStore.clear();
         setLoginInfo(null);
         navigate("/login");
       });

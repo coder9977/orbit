@@ -2,8 +2,8 @@ import { UserModel } from "../../models/user.ts";
 
 export const userResolvers = {
   Query: {
-    user: async () => {
-      return UserModel.find().lean();
+    user: async ({ id }: { id: string }) => {
+      return UserModel.findOne({ _id: id }).lean();
     },
   },
   Mutation: {

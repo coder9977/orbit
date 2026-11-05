@@ -19,12 +19,13 @@ const router = new Router({ prefix: "/api" });
 registerMiddlewares(app, middlewares)
 
 app.use(cors({
-  origin: (ctx) =>{
+  origin: (ctx) => {
     const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
     const formattedAllowedOrigins = allowedOrigins.map((origin) => origin.trim().replace(/\/$/, ""));
     const requestOrigin = ctx.get('origin');
-    return formattedAllowedOrigins.includes(requestOrigin) ? requestOrigin : "*"
-  }
+    return formattedAllowedOrigins.find((origin) => origin === requestOrigin) ?? "";
+  },
+  credentials: true,
 }));
 app.use(bodyParser());
 

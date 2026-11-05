@@ -1,8 +1,7 @@
 import { useState, useEffect, useContext, type MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { type UserInfo } from "../../components/ContextWrapper";
-import { API_RESPONSE, ResponseStatus } from "./const"
-import { tokenStore } from "../../utils/storage.utils";
+import { API_RESPONSE, ResponseStatus } from "./const";
 import {type GlobalContextType, GlobalContext} from "../../context/GlobalContext";
 import { BACKEND_ENDPOINT } from "../../config/config";
 import { httpRequest } from "../../utils/request.utils";
@@ -33,13 +32,11 @@ export const LoginPage = () => {
         const {status, data } = res as API_RESPONSE;
         if (status === ResponseStatus.FORBIDDEN) {
             setIsRememberMeChecked(false);
-            tokenStore.clear();
             alert("any of the username or password is fucking wrong!");
             return;
         }
         if(status === ResponseStatus.OK) {
-            tokenStore.set(data?.token);
-            setLoginInfo(data?.user as UserInfo);
+            setLoginInfo(data as UserInfo);
         }
         
         

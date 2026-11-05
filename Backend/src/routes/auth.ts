@@ -3,10 +3,11 @@ import moment from "moment";
 import type { Context } from "koa";
 import { UserModel } from "../models/user.ts";
 import { type RESPONSE } from "../types/types.ts";
-import { ERR_CODES, REQUEST_STATUS } from "../constants/constants.ts";
+import { AUTH_COOKIE_NAME, ERR_CODES, REQUEST_STATUS } from "../constants/constants.ts";
 import { verifyToken, generateToken } from "../utils/jwt.utils.ts";
 import { LoginModel } from "../models/login.ts";
 import mongoose from "mongoose";
+import { authMiddlewareConfig } from "../config/config.ts";
 
 export type UserInfo = {
   name?: string;
@@ -58,16 +59,25 @@ router.post("/login", async (ctx: Context): Promise<RESPONSE> => {
       { $set: { lastLoginAt: new Date(), login_id: loginID } },
       { new: true },
     ).exec();
+    ctx.cookies.set(AUTH_COOKIE_NAME, await generateToken({ name, login_id: loginID.toString() }), {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: authMiddlewareConfig.jwtExpiry * 1000 
+    });
+    ctx.status = REQUEST_STATUS.OK;
     return (ctx.body = {
-      data: {
-        token: await generateToken({ name, login_id: loginID.toString() }),
-        user,
-      },
+      data: user,
       status: REQUEST_STATUS.OK,
     });
   } catch (error) {
     console.log("Login Error: ", error);
-    return (ctx.body = error as RESPONSE);
+    ctx.status = REQUEST_STATUS.INTERNAL_SERVER_ERROR;
+    return (ctx.body = {
+     msg: "Internal server error during login.",
+     status: REQUEST_STATUS.INTERNAL_SERVER_ERROR,
+     code: ERR_CODES.SERVER_ERROR,
+    });
   }
 });
 

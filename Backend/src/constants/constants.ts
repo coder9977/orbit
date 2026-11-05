@@ -23,3 +23,4 @@ export enum AUTH_MIDDLEWARE_ERROR_CODES {
     INVALID_CREDENTIALS = "Invalid credentials provided. Please provide valid credentials.",
 }
 
+export const AUTH_COOKIE_NAME = "token";

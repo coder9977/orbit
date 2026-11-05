@@ -6,4 +6,5 @@ export const JWT_VALIDITY_UNIT = "days"; // days, minutes, hours, etc.
 export const JWT_VALIDITY_PERIOD = process.env.JWT_VALIDITY_PERIOD || 1; // Default to 1440 minutes (24 hours)
 export const authMiddlewareConfig = {
   whitelist: ["/login", "/register",],
-}
+  jwtExpiry: 60 // 60 seconds
+};

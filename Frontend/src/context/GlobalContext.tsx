@@ -1,8 +1,9 @@
 import { createContext } from "react";
-import { UserInfo } from "../components/ContextWrapper";
+import { UserInfo } from "../hooks/useAuth";
 
 export type GlobalContextType = {
     loginInfo: UserInfo | null;
-    setLoginInfo: (userInfo: UserInfo | null) => void;
+    clearLoginInfo: () => void;
+    refreshAuth: () => Promise<void>;
 }
 export const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
